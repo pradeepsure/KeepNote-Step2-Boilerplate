@@ -89,7 +89,7 @@ The folders and files you see in this repositories is how it is expected to be i
 
 1. Clone the base boilerplate in the folder **assignment-solution-step2** of your local machine
     
-    `git clone https://gitlab-cts.stackroute.in/stack_java_keep/KeepNote-Step2-Boilerplate.git assignment-solution-step2`
+    `git clone https://gitlab-cts.stackroute.in/stack_java_keep/KeepNote-Step2-Boilerplate.git`
     
 2. Navigate to the assignment-solution-step2 folder
 
