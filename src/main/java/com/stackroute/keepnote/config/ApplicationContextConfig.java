@@ -17,6 +17,14 @@ public class ApplicationContextConfig {
 	 * name 2. Database URL 3. UserName 4. Password
 	 */
 
+/*
+        Use this configuration while submitting solution in hobbes.
+		dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+		dataSource.setUrl("jdbc:mysql://" + System.getenv("MYSQL_HOST") + ":3306/" + System.getenv("MYSQL_DATABASE")
+				+"?verifyServerCertificate=false&useSSL=false&requireSSL=false");
+		dataSource.setUsername(System.getenv("MYSQL_USER"));
+		dataSource.setPassword(System.getenv("MYSQL_PASSWORD")); */
+
 	/*
 	 * Define the bean for SessionFactory. Hibernate SessionFactory is the factory
 	 * class through which we get sessions and perform database operations.
