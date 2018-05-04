@@ -1,5 +1,7 @@
 package com.stackroute.keepnote.test;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -39,15 +41,16 @@ public class NoteControllerTest {
 
 	@Mock
 	private NoteDAO noteDao;
-
+	
 	@InjectMocks
-	private NoteController noteController = new NoteController();
+	private NoteController noteController;
 
 	@Before
 	public void setUp() throws Exception {
-
+		noteController = new NoteController(noteDao);
 		MockitoAnnotations.initMocks(this);
-		mockMvc = MockMvcBuilders.standaloneSetup(noteController).build();
+		mockMvc = MockMvcBuilders.standaloneSetup(this.noteController).build();
+		
 		note = new Note(1, "Sample note application", "Testing for NoteController.class", "active", localDate);
 		Note note1 = new Note(1, "Sample note application -1", "Testing for NoteController.class", "active", localDate);
 		Note note2 = new Note(2, "Sample note application-2", "Testing for NoteController.class", "active", localDate);
@@ -56,6 +59,14 @@ public class NoteControllerTest {
 
 	}
 
+	
+	@Test
+    public void testMockCreation(){
+        assertNotNull(noteDao);
+        assertNotNull(noteController);
+        
+    }
+	
 	@Test
 	public void testIndexPage() throws Exception {
 		mockMvc.perform(get("/")).andExpect(status().isOk()).andExpect(forwardedUrl("index"));
@@ -63,8 +74,7 @@ public class NoteControllerTest {
 
 	@Test
 	public void testAddNotesSuccess() throws Exception {
-
-		when(noteDao.saveNote(note)).thenReturn(true);
+		when(noteDao.saveNote(any())).thenReturn(true);
 		mockMvc.perform(post("/add").param("noteTitle", note.getNoteTitle()).param("noteContent", note.getNoteContent())
 				.param("noteStatus", note.getNoteStatus())).andExpect(status().isFound()).andExpect(redirectedUrl("/"));
 	}
@@ -72,7 +82,7 @@ public class NoteControllerTest {
 	@Test
 	public void testAddnotesFailure() throws Exception {
 
-		when(noteDao.saveNote(note)).thenReturn(false);
+		when(noteDao.saveNote(any())).thenReturn(false);
 		mockMvc.perform(post("/add").param("noteTitle", note.getNoteTitle()).param("noteContent", "")
 				.param("noteStatus", note.getNoteStatus())).andExpect(status().isOk()).andExpect(view().name("index"))
 				.andExpect(forwardedUrl("index"));
@@ -83,7 +93,7 @@ public class NoteControllerTest {
 	public void testUpdateNoteSuccess() throws Exception {
 
 		note.setNoteContent("Update test cases for NoteController");
-		when(noteDao.UpdateNote(note)).thenReturn(true);
+		when(noteDao.UpdateNote(any())).thenReturn(true);
 		mockMvc.perform(post("/update").param("noteId", "1").param("noteTitle", note.getNoteTitle())
 				.param("noteContent", note.getNoteContent()).param("noteStatus", note.getNoteStatus()))
 				.andExpect(status().isFound()).andExpect(redirectedUrl("/"));
